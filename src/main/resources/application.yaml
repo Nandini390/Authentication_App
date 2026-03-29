@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: Auth-app
+
+  profiles:
+    active: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth_project_db
+    username: root
+    password: Temp.567
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+server:
+  port: 8080
+
