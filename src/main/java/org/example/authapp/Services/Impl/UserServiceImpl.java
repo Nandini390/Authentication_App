@@ -1,9 +1,10 @@
-package org.example.authapp.Services;
+package org.example.authapp.Services.Impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.authapp.Dtos.UserDto;
 import org.example.authapp.Repositories.UserRepository;
+import org.example.authapp.Services.UserService;
 import org.example.authapp.entities.Provider;
 import org.example.authapp.entities.User;
 import org.example.authapp.exception.ResourceNotFoundException;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
