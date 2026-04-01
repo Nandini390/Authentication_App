@@ -21,11 +21,11 @@ public class CookieService {
     private final Logger logger = LoggerFactory.getLogger(CookieService.class);
 
     public CookieService(
-            @Value("${security.jwt.refresh-token-cookie-name}") String refreshTokenCookieName,
-            @Value("${security.jwt.cookie-http-only}") boolean cookieHttpOnly,
-            @Value("${security.jwt.cookie-secure}") boolean cookieSecure,
-            @Value("${security.jwt.cookie-domain}") String cookieDomain,
-            @Value("${security.jwt.cookie-same-site}") String cookieSameSite){
+            @Value("${spring.security.jwt.refresh-token-cookie-name}") String refreshTokenCookieName,
+            @Value("${spring.security.jwt.cookie-http-only}") boolean cookieHttpOnly,
+            @Value("${spring.security.jwt.cookie-secure}") boolean cookieSecure,
+            @Value("${spring.security.jwt.cookie-domain}") String cookieDomain,
+            @Value("${spring.security.jwt.cookie-same-site}") String cookieSameSite){
          this.refreshTokenCookieName=refreshTokenCookieName;
          this.cookieHttpOnly=cookieHttpOnly;
          this.cookieSecure=cookieSecure;

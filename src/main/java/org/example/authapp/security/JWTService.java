@@ -29,7 +29,7 @@ public class JWTService {
     private final long refreshTtlSeconds;
     private final String issuer;
 
-    public JWTService(@Value("${security.jwt.secret}") String secret,@Value("${security.jwt.access-ttl-seconds}") long accessTtlSeconds, @Value("${security.jwt.refresh-ttl-seconds}") long refreshTtlSeconds,@Value("${security.jwt.issuer}") String issuer){
+    public JWTService(@Value("${spring.security.jwt.secret}") String secret,@Value("${spring.security.jwt.access-ttl-seconds}") long accessTtlSeconds, @Value("${spring.security.jwt.refresh-ttl-seconds}") long refreshTtlSeconds,@Value("${spring.security.jwt.issuer}") String issuer){
         if(secret==null || secret.length()<64){
             throw new IllegalArgumentException("Invalid Secret");
         }

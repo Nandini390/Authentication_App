@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tools.jackson.databind.ObjectMapper;
 
@@ -25,6 +26,7 @@ import tools.jackson.databind.ObjectMapper;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
@@ -39,6 +41,11 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/auth/logout").permitAll()
                                 .anyRequest().authenticated()
                 )
+                .oauth2Login(oauth2->
+                        oauth2.successHandler(authenticationSuccessHandler)
+                                .failureHandler(null)
+                )
+                .logout(AbstractHttpConfigurer::disable)
                 //this exception will run if any unauthenticated person tries to access api
                 .exceptionHandling(ex->ex.authenticationEntryPoint((request, response, e) ->{
                     response.setStatus(401);

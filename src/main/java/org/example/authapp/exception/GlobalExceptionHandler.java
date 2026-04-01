@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex){
+    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex){
         ErrorResponse error = new ErrorResponse(ex.getMessage(),404,"Resource not found",System.currentTimeMillis());
         return ResponseEntity.status(404).body(error);
     }

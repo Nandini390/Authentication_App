@@ -2,9 +2,6 @@ spring:
   application:
     name: Auth-app
 
-  profiles:
-    active: dev
-
   datasource:
     url: jdbc:mysql://localhost:3306/auth_project_db
     username: root
@@ -20,6 +17,32 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:224472306715-k87hr5po00ggdvqpu8h9jp5n8q7qogn3.apps.googleusercontent.com}
+            client-secret: ${GOOGLE_CLIENT_SECRET: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}
+            scope:
+              - email
+              - profile
+              - openid
+    jwt:
+      secret: ${JWT_SECRET:jhgfdcvbjmmnbvcxdfghjklkjhgfdiuytredsdfghkjhgfghkjhgfdsdfghjiop098765434567ujbvcxzcghjuiuytredcvgy7ujnhyt54edxde345tyuhbhu76j}
+      issuer: ${JWT_ISSUER:substring.com}
+      access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:3600}
+      refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:86400}
+      refresh-token-cookie-name: ${JWT_REFRESH_COOKIE_NAME:refreshToken}
+      cookie-secure: ${JWT_COOKIE_SECURE:TRUE}
+      cookie-http-only: ${JWT_COOKIE_HTTP_ONLY:true}
+      cookie-same-site: ${JWT_COOKIE_SAME-SITE:lax}
+      cookie-domain: ${JWT_COOKIE_DOMAIN:localhost}
+
+
+logging:
+  level:
+    org.springframework.web: debug
 server:
   port: 8080
 

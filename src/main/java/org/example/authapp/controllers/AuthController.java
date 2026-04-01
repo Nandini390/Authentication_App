@@ -63,6 +63,7 @@ public class AuthController {
                throw new DisabledException("user is disabled");
            }
         String jti = UUID.randomUUID().toString();
+           //used to save token info in database
         var refreshTokenOb = RefreshToken.builder()
                 .jti(jti)
                 .user(user)
@@ -70,17 +71,12 @@ public class AuthController {
                 .expiresAt(Instant.now().plusSeconds(jwtService.getRefreshTtlSeconds()))
                 .revoked(false)
                 .build();
-
-        //refresh token save--information
         refreshTokenRepository.save(refreshTokenOb);
-
-
         //access token--generate
         String accessToken = jwtService.generateAccessToken(user);
+        //used to generate the actual token string that is given to user
         String refreshToken = jwtService.generateRefreshToken(user, refreshTokenOb.getJti());
-
         // use cookie service to attach refresh token in cookie
-//
         cookieService.attachRefreshCookie(response, refreshToken, (int) jwtService.getRefreshTtlSeconds());
         cookieService.addNoStoreHeaders(response);
         TokenResponse tokenResponse = TokenResponse.of(accessToken, refreshToken, jwtService.getAccessTtlSeconds(), modelMapper.map(user, UserDto.class));
@@ -169,9 +165,8 @@ public class AuthController {
 
     //this method will read refresh token from request header or body
     private Optional<String> readRefreshTokenFromRequest(RefreshTokenRequest body, HttpServletRequest request) {
-        //            1. prefer reading refresh token from cookie
+        //   1. prefer reading refresh token from cookie
         if (request.getCookies() != null) {
-
             Optional<String> fromCookie = Arrays.stream(request.getCookies())
                     .filter(c -> cookieService.getRefreshTokenCookieName().equals(c.getName()))
                     .map(Cookie::getValue)
@@ -181,8 +176,6 @@ public class AuthController {
             if (fromCookie.isPresent()) {
                 return fromCookie;
             }
-
-
         }
 
         // 2 body:
@@ -196,7 +189,7 @@ public class AuthController {
             return Optional.of(refreshHeader.trim());
         }
 
-        //Authorization = Bearer <token>
+        //4. Authorization = Bearer <token>
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader != null && authHeader.regionMatches(true, 0, "Bearer ", 0, 7)) {
             String candidate = authHeader.substring(7).trim();
