@@ -48,10 +48,12 @@ server:
 
 
 app:
+  cors:
+    front-end-url: "http://localhost:5177"
   auth:
     frontend:
-     success-redirect: http://localhost:5173/auth/success
-     failure-redirect: http://localhost:5173/auth/failure
+     success-redirect: http://localhost:5177/auth/success
+     failure-redirect: http://localhost:5177/auth/failure
 
 
 
