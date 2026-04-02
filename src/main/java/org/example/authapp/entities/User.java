@@ -28,7 +28,6 @@ public class User implements UserDetails {
     private String email;
     private String name;
     private String password;
-    private String gender;
     private String image;
     private Boolean enable=true;
     @CreatedDate

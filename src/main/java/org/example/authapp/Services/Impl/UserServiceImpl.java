@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
         if(userDto.getName()!=null) existingUser.setName(userDto.getName());
         if(userDto.getImage()!=null) existingUser.setImage(userDto.getImage());
         if(userDto.getProvider()!=null) existingUser.setProvider(userDto.getProvider());
-        if(userDto.getGender()!=null) existingUser.setGender(userDto.getGender());
         //TODO:change password updation logic
         if(userDto.getPassword()!=null) existingUser.setPassword(userDto.getPassword());
         existingUser.setEnable(userDto.getEnable());
