@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.authapp.Dtos.UserDto;
 import org.example.authapp.Services.AuthService;
 import org.example.authapp.Services.UserService;
+import org.example.authapp.config.AppConstants;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +21,7 @@ public class AuthServiceImpl implements AuthService {
     public UserDto registerUser(UserDto userDto) throws IllegalAccessException {
         //verify email
         //verify password
-        //default roles
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userDto.setEnable(true);
         return userService.createUser(userDto);
     }
 }

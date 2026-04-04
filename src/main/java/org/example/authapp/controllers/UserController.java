@@ -3,9 +3,11 @@ package org.example.authapp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.example.authapp.Dtos.UserDto;
 import org.example.authapp.Services.UserService;
+import org.example.authapp.config.AppConstants;
 import org.example.authapp.entities.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +41,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByEmail(email),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('" +AppConstants.ADMIN_ROLE+ "')")
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable String userId){
       userService.deleteUser(userId);

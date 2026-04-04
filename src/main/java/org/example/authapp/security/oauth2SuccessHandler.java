@@ -5,10 +5,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.example.authapp.Repositories.RoleRepository;
 import org.example.authapp.Repositories.UserRepository;
 import org.example.authapp.Repositories.refreshTokenRepository;
+import org.example.authapp.config.AppConstants;
 import org.example.authapp.entities.Provider;
 import org.example.authapp.entities.RefreshToken;
+import org.example.authapp.entities.Role;
 import org.example.authapp.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.UUID;
 
 
@@ -33,6 +37,7 @@ public class oauth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JWTService jwtService;
     private final CookieService cookieService;
     private final refreshTokenRepository refreshTokenRepository;
+    private final RoleRepository roleRepository;
 
     @Value("${app.auth.frontend.success-redirect}")
     private String frontendSuccessUrl;
@@ -61,9 +66,15 @@ public class oauth2SuccessHandler implements AuthenticationSuccessHandler {
                         .email(email)
                         .name(name)
                         .image(picture)
+                        .enable(true)
                         .provider(Provider.GOOGLE)
                         .build();
-
+                //add role to Oauth user
+                Role role= roleRepository.findByName("ROLE_"+ AppConstants.GUEST_ROLE).orElse(null);
+                if(newUser.getRoles() == null){
+                    newUser.setRoles(new HashSet<>());
+                }
+                newUser.getRoles().add(role);
                user=userRepository.findByEmail(email).orElseGet(()->userRepository.save(newUser));
             }
             default->{

@@ -28,10 +28,11 @@ spring:
               - email
               - profile
               - openid
+            #redirect url: /login/oauth2/code/google
     jwt:
       secret: ${JWT_SECRET:jhgfdcvbjmmnbvcxdfghjklkjhgfdiuytredsdfghkjhgfghkjhgfdsdfghjiop098765434567ujbvcxzcghjuiuytredcvgy7ujnhyt54edxde345tyuhbhu76j}
       issuer: ${JWT_ISSUER:substring.com}
-      access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:3600}
+      access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:600}
       refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:86400}
       refresh-token-cookie-name: ${JWT_REFRESH_COOKIE_NAME:refreshToken}
       cookie-secure: ${JWT_COOKIE_SECURE:TRUE}
@@ -52,8 +53,8 @@ app:
     front-end-url: "http://localhost:5177"
   auth:
     frontend:
-     success-redirect: http://localhost:5177/auth/success
-     failure-redirect: http://localhost:5177/auth/failure
+     success-redirect: http://localhost:5177/oauth/success
+     failure-redirect: http://localhost:5177/oauth/failure
 
 
 

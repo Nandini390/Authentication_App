@@ -3,9 +3,12 @@ package org.example.authapp.Services.Impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.authapp.Dtos.UserDto;
+import org.example.authapp.Repositories.RoleRepository;
 import org.example.authapp.Repositories.UserRepository;
 import org.example.authapp.Services.UserService;
+import org.example.authapp.config.AppConstants;
 import org.example.authapp.entities.Provider;
+import org.example.authapp.entities.Role;
 import org.example.authapp.entities.User;
 import org.example.authapp.exception.ResourceNotFoundException;
 import org.example.authapp.exception.UserAlreadyExistsException;
@@ -13,6 +16,7 @@ import org.example.authapp.helpers.UserHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final RoleRepository roleRepository;
 
     @Override
     @Transactional
@@ -32,9 +37,14 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsByEmail(userDto.getEmail())){
             throw new UserAlreadyExistsException("Email already Exists");
         }
-        //TODO:assign role here to new user____ for authorization
         User user=modelMapper.map(userDto, User.class);
         user.setProvider(userDto.getProvider()!=null? userDto.getProvider(): Provider.LOCAL);
+        user.setEnable(true);
+        Role role= roleRepository.findByName("ROLE_"+ AppConstants.GUEST_ROLE).orElse(null);
+        if(user.getRoles() == null){
+            user.setRoles(new HashSet<>());
+        }
+        user.getRoles().add(role);
         User savedUser=userRepository.save(user);
         return modelMapper.map(savedUser,UserDto.class);
     }
